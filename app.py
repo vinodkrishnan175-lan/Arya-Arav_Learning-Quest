@@ -504,8 +504,17 @@ def render_home() -> None:
     family_total = totals["Arya"] + totals["Arav"]
     unlocked = family_total >= WEEKLY_GOAL
 
+    reward_text = "🎉 Reward Unlocked: +1 Hour Gaming" if unlocked else "🎮 Unlock at 900 points"
+
     st.markdown(
-        f"<div class='hero'><h1>{APP_TITLE}</h1><p>This week's theme: <b>{theme}</b></p><p>Weekly family goal: <b>{family_total} / {WEEKLY_GOAL}</b> points {'🎮 Reward unlocked' if unlocked else '🎮 Weekend reward locked'}</p></div>",
+        f"""
+        <div class='hero'>
+            <h1>{APP_TITLE}</h1>
+            <p><b>Theme of the Week:</b> {theme}</p>
+            <h3>{family_total} / {WEEKLY_GOAL} points</h3>
+            <p>{reward_text}</p>
+        </div>
+        """,
         unsafe_allow_html=True,
     )
     st.progress(min(family_total / WEEKLY_GOAL, 1.0))
@@ -522,6 +531,17 @@ def render_home() -> None:
                 f"<div class='stat-card'>Yesterday score: <b>{y_score}</b><br/>Questions completed: <b>{y_questions}</b><br/>Streak: 🔥 <b>{streak(child)}</b> days</div>",
                 unsafe_allow_html=True,
             )
+            st.markdown(
+                f"""
+                <div class='stat-card'>
+                    <h3>{child}</h3>
+                    <p>Yesterday: <b>{y_score}</b></p>
+                    <p>Questions: <b>{y_questions}</b></p>
+                    <p>🔥 Streak: <b>{streak(child)} days</b></p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
             if st.button(f"Start {child}'s Quest", key=f"start-{child}"):
                 start_session(child)
                 st.rerun()
@@ -533,20 +553,48 @@ def render_home() -> None:
         approx_remaining = max(0, 5 * QUESTION_TARGET - s["attempted"])
         with col:
             st.markdown(
-                f"<div class='stat-card'><h4>{child}</h4>"
-                f"Points: <b>{s['pts']} / {CHILD_TARGET}</b><br/>"
-                f"Questions completed: <b>{s['attempted']}</b><br/>"
-                f"Remaining questions (approx): <b>{approx_remaining}</b><br/>"
-                f"Average score: <b>{s['avg_score']}%</b></div>",
+                f"""
+                <div class='stat-card'>
+                <h4>{child}</h4>
+                <p>Points: <b>{s['pts']} / {CHILD_TARGET}</b></p>
+                <p>Questions Done: <b>{s['attempted']}</b></p>
+                <p>Remaining: <b>{approx_remaining}</b></p>
+                <p>Avg Score: <b>{s['avg_score']}%</b></p>
+                </div>
+                """
                 unsafe_allow_html=True,
             )
 
     st.subheader("Explore")
     e1, e2, e3 = st.columns(3)
-    e1.info("🌍 Country of the Week\n\nKenya")
-    e2.info("🧠 Brain Puzzle\n\nWhat comes next: 3, 6, 12, 24, ?")
-    e3.info("🌿 Nature Fact\n\nTrees release oxygen into the air.")
-
+    
+    e1.markdown(
+        """
+        <div class='stat-card'>
+        🌍 <b>Country of the Week</b><br/><br/>
+        Kenya
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    e1.markdown(
+        """
+        <div class='stat-card'>
+        🧠 <b>Brain Puzzle</b><br/><br/>
+        3, 6, 12, 24, ?
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )   
+    e1.markdown(
+        """
+        <div class='stat-card'>
+        🌿 <b>Nature Fact</b><br/><br/>
+        Trees release oxygen into the air.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )  
 
 def render_parent_corner() -> None:
     today = date.today()
