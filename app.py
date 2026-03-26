@@ -546,55 +546,62 @@ def render_home() -> None:
                 start_session(child)
                 st.rerun()
 
-    st.subheader("Weekly Progress")
-    cols = st.columns(2)
-    for col, child in zip(cols, ["Arya", "Arav"]):
-        s = stats[child]
-        approx_remaining = max(0, 5 * QUESTION_TARGET - s["attempted"])
-        with col:
-            st.markdown(
-                f"""
-                <div class='stat-card'>
-                <h4>{child}</h4>
-                <p>Points: <b>{s['pts']} / {CHILD_TARGET}</b></p>
-                <p>Questions Done: <b>{s['attempted']}</b></p>
-                <p>Remaining: <b>{approx_remaining}</b></p>
-                <p>Avg Score: <b>{s['avg_score']}%</b></p>
-                </div>
-                """
-                unsafe_allow_html=True,
-            )
+st.subheader("Weekly Progress")
+cols = st.columns(2)
 
-    st.subheader("Explore")
-    e1, e2, e3 = st.columns(3)
-    
-    e1.markdown(
-        """
-        <div class='stat-card'>
-        🌍 <b>Country of the Week</b><br/><br/>
+for col, child in zip(cols, ["Arya", "Arav"]):
+    s = stats[child]
+    approx_remaining = max(0, 5 * QUESTION_TARGET - s["attempted"])
+
+    with col:
+        st.markdown(
+            f"""
+            <div class='stat-card'>
+                <h4>{child}</h4>
+                <p>Points: <b>{s["pts"]} / {CHILD_TARGET}</b></p>
+                <p>Questions Done: <b>{s["attempted"]}</b></p>
+                <p>Remaining: <b>{approx_remaining}</b></p>
+                <p>Avg Score: <b>{s["avg_score"]}%</b></p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+st.subheader("Explore")
+e1, e2, e3 = st.columns(3)
+
+e1.markdown(
+    """
+    <div class='stat-card'>
+        <div>🌍 <b>Country of the Week</b></div>
+        <br/>
         Kenya
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    e1.markdown(
-        """
-        <div class='stat-card'>
-        🧠 <b>Brain Puzzle</b><br/><br/>
-        3, 6, 12, 24, ?
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )   
-    e1.markdown(
-        """
-        <div class='stat-card'>
-        🌿 <b>Nature Fact</b><br/><br/>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+e2.markdown(
+    """
+    <div class='stat-card'>
+        <div>🧠 <b>Brain Puzzle</b></div>
+        <br/>
+        What comes next: 3, 6, 12, 24, ?
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+e3.markdown(
+    """
+    <div class='stat-card'>
+        <div>🌿 <b>Nature Fact</b></div>
+        <br/>
         Trees release oxygen into the air.
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )  
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 def render_parent_corner() -> None:
     today = date.today()
